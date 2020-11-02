@@ -1,0 +1,14 @@
+pages:
+  - Manual:Basic_Essentials
+  - Manual:Database_Functions
+  - Manual:Date/Time_Functions
+  - Manual:Discord_Functions
+  - Manual:File_System_Functions
+  - Manual:Mapper_Functions
+  - Manual:Miscellaneous_Functions
+  - Manual:Mudlet_Object_Functions
+  - Manual:Networking_Functions
+  - Manual:String_Functions
+  - Manual:Table_Functions
+  - Manual:Text_to_Speech_Functions
+  - Manual:UI_Functions
