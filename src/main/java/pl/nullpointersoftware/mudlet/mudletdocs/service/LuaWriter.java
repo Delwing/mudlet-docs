@@ -28,7 +28,7 @@ public class LuaWriter {
     private final Set<Cleanup> cleanups;
 
     public void generateFile(String name, Set<LuaDescriptor> descriptors) {
-        String dir = System.getProperty("user.dir") + "/Mudlet Docs/";
+        String dir = System.getProperty("user.dir") + "/docs/";
         try {
             Files.createDirectories(Path.of(dir));
         } catch (IOException e) {
