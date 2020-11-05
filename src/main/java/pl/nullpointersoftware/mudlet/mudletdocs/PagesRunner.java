@@ -10,6 +10,10 @@ import pl.nullpointersoftware.mudlet.mudletdocs.service.LuaWriter;
 import pl.nullpointersoftware.mudlet.mudletdocs.service.PageAnalyzer;
 import pl.nullpointersoftware.mudlet.mudletdocs.service.api.WikiRestClient;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,7 +32,7 @@ public class PagesRunner implements ApplicationRunner {
     private static final ExecutorService executor = Executors.newFixedThreadPool(10);
 
     @Override
-    public void run(ApplicationArguments args) throws InterruptedException {
+    public void run(ApplicationArguments args) throws InterruptedException, URISyntaxException, IOException {
         pagesUrls.getPages().forEach( pageName -> {
             executor.submit(() -> {
                 log.info("Processing {}", pageName);
@@ -41,6 +45,9 @@ public class PagesRunner implements ApplicationRunner {
         executor.awaitTermination(1, TimeUnit.MINUTES);
 
         luaWriter.generateFile("lfs.lua", LfsDoc.DESCRIPTORS);
+
+        String dir = System.getProperty("user.dir") + "/Mudlet Docs/globals.lua";
+        Files.copy(Path.of(getClass().getClassLoader().getResource("globals.lua").toURI()), Path.of(dir));
     }
 
     private String sanitizeFilename(String name) {
