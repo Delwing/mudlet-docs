@@ -29,3 +29,11 @@ color_table = {}
 db = {}
 yajl = {}
 lfs = {}
+datetime = {}
+gmcp = {}
+
+speedWalkPath = ""
+speedWalkDir = ""
+
+rex = {}
+Geyser = {}
