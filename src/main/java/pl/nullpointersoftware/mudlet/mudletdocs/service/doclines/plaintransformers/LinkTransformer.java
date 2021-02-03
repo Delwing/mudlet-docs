@@ -7,8 +7,8 @@ public class LinkTransformer implements PlainTransformer {
 
     @Override
     public String transform(String line) {
-        line = line.replaceAll("\\[(\\S+) ((?:\\w+ ?)+)]","[$1]($2)");
-        line = line.replaceAll("\\[\\[(.*)\\|(.*)]]", "[https://wiki.mudlet.org/w/$1]($2)");
+        line = line.replaceAll("\\[(\\S+) ((?:\\w+ ?)+)]","[$2]($1)");
+        line = line.replaceAll("\\[\\[(.*)\\|(.*)]]", "[$2](https://wiki.mudlet.org/w/$1)");
         return line;
     }
 }
