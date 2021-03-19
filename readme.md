@@ -1,4 +1,4 @@
-# Mudlet Dodcs Extract
+# Mudlet Docs Extract
 
 Purpose of this project is to extract LUA documentatio into `.lua` files that can be imported
 into project (or added to lib path). That way IDE can autocomplete, popup doc and hint parameters of functions.
