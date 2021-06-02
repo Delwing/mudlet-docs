@@ -17,10 +17,5 @@ jobs:
           java-version: 11
       - name: Build with Gradle
         run: ./gradlew bootRun
-      - name: Deploy to Dropbox
-        uses: aTable/deploy-to-dropbox@v1.0.7
         with:
           DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
-          DROPBOX_DESTINATION_PATH_PREFIX: "/"
-          GLOB: "Mudlet Docs/*.lua"
-          DEBUG: true

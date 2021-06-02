@@ -27,7 +27,7 @@ public class LuaWriter {
     private final Set<BlockTransformer> blockTransformers;
     private final Set<Cleanup> cleanups;
 
-    public void generateFile(String name, Set<LuaDescriptor> descriptors) {
+    public Path generateFile(String name, Set<LuaDescriptor> descriptors) {
         String dir = System.getProperty("user.dir") + "/Mudlet Docs/";
         try {
             Files.createDirectories(Path.of(dir));
@@ -36,7 +36,7 @@ public class LuaWriter {
         }
         Path filePath = Path.of(dir + name);
         try {
-            Files.writeString(filePath, "", StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+            Files.writeString(filePath, "");
         } catch (IOException e) {
             log.error("Cannot prepare file {} for writing.", filePath, e);
         }
@@ -47,6 +47,7 @@ public class LuaWriter {
                 log.error("Cannot write to file {}.", filePath, e);
             }
         });
+        return filePath;
     }
 
     private String functionGenerate(LuaDescriptor descriptor) {

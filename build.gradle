@@ -24,6 +24,7 @@ ext {
 
 dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+	implementation 'com.dropbox.core:dropbox-core-sdk:4.0.0'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 }
