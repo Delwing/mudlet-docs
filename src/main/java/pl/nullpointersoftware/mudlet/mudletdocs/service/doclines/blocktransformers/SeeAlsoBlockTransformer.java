@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-@Component
+//@Component
 public class SeeAlsoBlockTransformer implements BlockTransformer {
 
     private final Pattern functionNames = Pattern.compile("(?:\\[\\[.*?\\|(.*?)(?:\\(\\))?]](?:, )?)");
