@@ -17,5 +17,5 @@ jobs:
           java-version: 11
       - name: Build with Gradle
         run: ./gradlew bootRun
-        with:
+        env:
           DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
