@@ -15,14 +15,18 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class LuaDescriptor {
 
-    private final String functionName;
+    private String functionName;
     private String functionSignature;
     private Map<String, String> params;
     private List<String> docLines = new ArrayList<>();
     private Set<String> seeAlso = new HashSet<>();
 
-    public LuaDescriptor(String functionName, String functionSignature) {
+    public LuaDescriptor(String functionName) {
         this.functionName = functionName;
+    }
+
+    public LuaDescriptor(String functionName, String functionSignature) {
+        this(functionName);
         this.functionSignature = functionSignature;
     }
 

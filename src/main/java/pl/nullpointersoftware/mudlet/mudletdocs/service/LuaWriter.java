@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
 import java.util.Set;
@@ -26,6 +28,8 @@ public class LuaWriter {
     private final Set<PlainTransformer> plainTransformers;
     private final Set<BlockTransformer> blockTransformers;
     private final Set<Cleanup> cleanups;
+
+    private static final Pattern SIGNATURE_ARGUMENTS_PATTERN = Pattern.compile(".*\\((.+)\\)");
 
     public Path generateFile(String name, Set<LuaDescriptor> descriptors) {
         String dir = System.getProperty("user.dir") + "/Mudlet Docs/";
@@ -64,13 +68,40 @@ public class LuaWriter {
             descriptor.setDocLines(cleanup.cleanup(descriptor.getDocLines()));
         }
 
+        List<LuaDescriptor> descriptors = new ArrayList<>();
+        descriptors.add(descriptor);
+
+        if (descriptor.getFunctionName().matches(".*, .*") && descriptor.getFunctionSignature().matches(".*\\) or .*")) {
+            String secondName = descriptor.getFunctionName().substring(descriptor.getFunctionName().indexOf(",") + 2);
+            String secondSignature = descriptor.getFunctionSignature().substring(descriptor.getFunctionSignature().indexOf(" or ") + 4);
+
+            descriptor.setFunctionName(descriptor.getFunctionName().substring(0, descriptor.getFunctionName().indexOf(",")));
+            descriptor.setFunctionSignature(descriptor.getFunctionSignature().substring(0, descriptor.getFunctionSignature().indexOf(" or ")));
+
+            // When encountering second signature of similar method, but without arguments like utf8.find(), copies arguments from first signature
+            Matcher signatureMatcher = SIGNATURE_ARGUMENTS_PATTERN.matcher(descriptor.getFunctionSignature());
+            if (signatureMatcher.find()) {
+                String arguments = signatureMatcher.group(1);
+                if(!secondSignature.matches(".*\\(.*\\)")) {
+                    secondSignature += "()";
+                }
+                secondSignature = secondSignature.replace("()", "(" + arguments + ")");
+            }
+
+            LuaDescriptor secondDescriptor = new LuaDescriptor(secondName, secondSignature);
+            secondDescriptor.setDocLines(descriptor.getDocLines());
+            descriptors.add(secondDescriptor);
+        }
+
         StringBuilder sb = new StringBuilder();
-        descriptor.getDocLines().stream().map(line -> "--- " + line).forEach(line -> sb.append(line).append("\n"));
-        sb.append("function ");
-        sb.append(sanitizerFunction(descriptor));
-        sb.append("\n");
-        sb.append("end");
-        sb.append("\n\n");
+        descriptors.forEach(currentDescriptor -> {
+            currentDescriptor.getDocLines().stream().map(line -> "--- " + line).forEach(line -> sb.append(line).append("\n"));
+            sb.append("function ");
+            sb.append(sanitizeFunction(currentDescriptor));
+            sb.append("\n");
+            sb.append("end");
+            sb.append("\n\n");
+        });
         return sb.toString();
     }
 
@@ -81,7 +112,7 @@ public class LuaWriter {
         return line;
     }
 
-    public static String sanitizerFunction(LuaDescriptor descriptor) {
+    public static String sanitizeFunction(LuaDescriptor descriptor) {
         String func = descriptor.getFunctionSignature();
 
         if (Objects.isNull(func)) {
