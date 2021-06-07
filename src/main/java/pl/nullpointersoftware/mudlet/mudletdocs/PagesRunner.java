@@ -51,6 +51,7 @@ public class PagesRunner implements ApplicationRunner {
         executor.awaitTermination(1, TimeUnit.MINUTES);
 
         dropBoxUploader.addFile(luaWriter.generateFile("lfs.lua", LfsDoc.DESCRIPTORS));
+        dropBoxUploader.addFile(luaWriter.generateFile("rex.lua", RexDoc.DESCRIPTORS));
 
         String dir = System.getProperty("user.dir") + "/Mudlet Docs/globals.lua";
         Path globalsPath = Path.of(dir);
