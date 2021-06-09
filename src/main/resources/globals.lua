@@ -26,13 +26,14 @@ mudlet.supports = {}
 --- Color definitions used by Geyser, cecho, and many other functions - see showColors(). The profile's color preferences are also accessible under the ansi_ keys.
 color_table = {}
 
+utf8 = {}
 db = {}
 yajl = {}
 lfs = {}
 datetime = {}
 gmcp = {}
 
-speedWalkPath = ""
+speedWalkPath = {}
 speedWalkDir = ""
 
 rex = {}
