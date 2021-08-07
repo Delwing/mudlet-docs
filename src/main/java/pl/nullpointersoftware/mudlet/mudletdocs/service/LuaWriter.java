@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.nullpointersoftware.mudlet.mudletdocs.model.LuaDescriptor;
+import pl.nullpointersoftware.mudlet.mudletdocs.service.doclines.BlockState;
 import pl.nullpointersoftware.mudlet.mudletdocs.service.doclines.blocktransformers.BlockTransformer;
 import pl.nullpointersoftware.mudlet.mudletdocs.service.doclines.cleanup.Cleanup;
 import pl.nullpointersoftware.mudlet.mudletdocs.service.doclines.plaintransformers.PlainTransformer;
@@ -56,8 +57,12 @@ public class LuaWriter {
 
     private String functionGenerate(LuaDescriptor descriptor) {
         ListIterator<String> docsIterator = descriptor.getDocLines().listIterator();
+        BlockState blockState = new BlockState();
         while (docsIterator.hasNext()) {
-            docsIterator.set(transform(docsIterator.next()));
+            String line = docsIterator.next();
+            blockState.checkForOpeners(line);
+            docsIterator.set(transform(line, blockState));
+            blockState.checkForClosings(line);
         }
 
         for (BlockTransformer blockTransformer : blockTransformers) {
@@ -105,9 +110,9 @@ public class LuaWriter {
         return sb.toString();
     }
 
-    public String transform(String line) {
+    public String transform(String line, BlockState blockState) {
         for (PlainTransformer plainTransformer : plainTransformers) {
-            line = plainTransformer.transform(line);
+            line = plainTransformer.transform(line, blockState);
         }
         return line;
     }
