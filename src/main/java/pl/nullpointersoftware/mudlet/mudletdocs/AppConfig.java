@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-@ConfigurationProperties(prefix = "")
+@ConfigurationProperties(prefix = "mudlet-docs")
 @Data
-public class PagesUrls {
+public class AppConfig {
 
     private List<String> pages;
 

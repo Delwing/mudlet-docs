@@ -5,8 +5,7 @@ import java.nio.file.Path;
 public class NoopDropBoxUploader implements DropBoxUploader {
 
     @Override
-    public void addFile(Path path) {
-
+    public void addFile(Path path, String dir) {
     }
 
     @Override

@@ -31,12 +31,12 @@ public class DropBoxUploaderImpl implements DropBoxUploader {
     }
 
     @Override
-    public void addFile(Path path) {
+    public void addFile(Path path, String dir) {
         try (InputStream in = new FileInputStream(path.toFile())) {
             String sessionId = client.files().uploadSessionStart(true).uploadAndFinish(in).getSessionId();
             log.info("Uploading {} to DropBox", path.toString());
             UploadSessionCursor cursor = new UploadSessionCursor(sessionId, path.toFile().length());
-            CommitInfo commitInfo = new CommitInfo("/Mudlet Docs/" + path.getFileName().toString(), WriteMode.OVERWRITE, false, new Date(), false, null, false);
+            CommitInfo commitInfo = new CommitInfo("/Mudlet Docs/" + dir + path.getFileName().toString(), WriteMode.OVERWRITE, false, new Date(), false, null, false);
             UploadSessionFinishArg arg = new UploadSessionFinishArg(cursor, commitInfo);
             entries.add((arg));
         } catch (IOException | DbxException e) {

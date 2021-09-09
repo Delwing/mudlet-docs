@@ -25,4 +25,6 @@ public class WikiRestClient {
         return restTemplate.exchange(String.format(URL, page), HttpMethod.GET, entity, WikiResponse.class).getBody();
     }
 
+
+
 }

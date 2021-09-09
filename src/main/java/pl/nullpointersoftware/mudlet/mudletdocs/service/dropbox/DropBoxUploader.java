@@ -5,7 +5,10 @@ import lombok.SneakyThrows;
 import java.nio.file.Path;
 
 public interface DropBoxUploader {
-    void addFile(Path path);
+    default void addFile(Path path) {
+        addFile(path, "");
+    }
+    void addFile(Path path, String dir);
 
     @SneakyThrows
     void finish();
