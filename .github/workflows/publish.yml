@@ -21,7 +21,13 @@ jobs:
         run: ./gradlew bootRun
         env:
           DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
-      - uses: actions/upload-artifact@v4
+      - uses: montudor/action-zip@v1
         with:
-          name: mudlet-docs
-          path: Mudlet Docs
+            args: zip -qq -r mudlet-docs.zip 'Mudlet Docs'
+      - name: Upload reader files to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: mudlet-docs.zip
+          tag: release
+          overwrite: true
