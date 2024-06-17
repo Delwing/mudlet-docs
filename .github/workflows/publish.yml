@@ -29,6 +29,6 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: mudletdocs.zip
-          asset_name: mudlet-docs
+          asset_name: mudlet-docs.zip
           tag: release
           overwrite: true
