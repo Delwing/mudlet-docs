@@ -8,10 +8,7 @@ import org.springframework.stereotype.Component;
 import pl.nullpointersoftware.mudlet.mudletdocs.model.LuaDescriptor;
 import pl.nullpointersoftware.mudlet.mudletdocs.service.LuaWriter;
 import pl.nullpointersoftware.mudlet.mudletdocs.service.PageAnalyzer;
-import pl.nullpointersoftware.mudlet.mudletdocs.service.api.GithubRestClient;
 import pl.nullpointersoftware.mudlet.mudletdocs.service.api.WikiRestClient;
-import pl.nullpointersoftware.mudlet.mudletdocs.service.dropbox.DropBoxUploader;
-import pl.nullpointersoftware.mudlet.mudletdocs.service.dropbox.DropBoxUploaderFactory;
 import pl.nullpointersoftware.mudlet.mudletdocs.service.github.GithubDownloader;
 
 import java.io.IOException;
@@ -33,35 +30,28 @@ public class PagesRunner implements ApplicationRunner {
     private final LuaWriter luaWriter;
     private final WikiRestClient wikiRestClient;
     private final GithubDownloader githubDownloader;
-    private final DropBoxUploaderFactory dropBoxUploaderFactory;
 
     @Override
     public void run(ApplicationArguments args) throws InterruptedException, URISyntaxException, IOException {
-        DropBoxUploader dropBoxUploader = dropBoxUploaderFactory.getClient();
         ExecutorService executor = Executors.newFixedThreadPool(appConfig.getPages().size());
-        appConfig.getPages().forEach(pageName -> {
-            executor.submit(() -> {
-                log.info("Processing {}", pageName);
-                Set<LuaDescriptor> descriptors = pageAnalyzer.analyze(wikiRestClient.getPage(pageName).getParse().getWikitext());
-                dropBoxUploader.addFile(luaWriter.generateFile(sanitizeFilename(pageName), descriptors));
-            });
-        });
+        appConfig.getPages().forEach(pageName -> executor.submit(() -> {
+            log.info("Processing {}", pageName);
+            Set<LuaDescriptor> descriptors = pageAnalyzer.analyze(wikiRestClient.getPage(pageName).getParse().getWikitext());
+            luaWriter.generateFile(sanitizeFilename(pageName), descriptors);
+        }));
 
         executor.shutdown();
         executor.awaitTermination(1, TimeUnit.MINUTES);
 
-        githubDownloader.downloadAll(dropBoxUploader);
+        githubDownloader.downloadAll();
 
-        dropBoxUploader.addFile(luaWriter.generateFile("lfs.lua", LfsDoc.DESCRIPTORS));
-        dropBoxUploader.addFile(luaWriter.generateFile("rex.lua", RexDoc.DESCRIPTORS));
+        luaWriter.generateFile("lfs.lua", LfsDoc.DESCRIPTORS);
+        luaWriter.generateFile("rex.lua", RexDoc.DESCRIPTORS);
 
         String dir = System.getProperty("user.dir") + "/Mudlet Docs/globals.lua";
         Path globalsPath = Path.of(dir);
         Files.deleteIfExists(globalsPath);
         Files.copy(Path.of(getClass().getClassLoader().getResource("globals.lua").toURI()), Path.of(dir));
-        dropBoxUploader.addFile(globalsPath);
-
-        dropBoxUploader.finish();
         log.info("We are done!");
     }
 
