@@ -16,7 +16,7 @@ import java.util.Base64;
 public class GithubDownloader {
 
     private final GithubRestClient githubRestClient;
-    private final String dir = System.getProperty("user.dir") + "/Mudlet Docs/geyser/";
+    private final String dir = System.getProperty("user.dir") + "/MudletDocs/geyser/";
 
     @SneakyThrows
     public void downloadAll() {

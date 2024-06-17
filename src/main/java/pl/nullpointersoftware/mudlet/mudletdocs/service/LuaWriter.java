@@ -33,7 +33,7 @@ public class LuaWriter {
     private static final Pattern SIGNATURE_ARGUMENTS_PATTERN = Pattern.compile(".*\\((.+)\\)");
 
     public Path generateFile(String name, Set<LuaDescriptor> descriptors) {
-        String dir = System.getProperty("user.dir") + "/Mudlet Docs/";
+        String dir = System.getProperty("user.dir") + "/MudletDocs/";
         try {
             Files.createDirectories(Path.of(dir));
         } catch (IOException e) {

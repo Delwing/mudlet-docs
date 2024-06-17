@@ -23,7 +23,7 @@ jobs:
           DROPBOX_ACCESS_TOKEN: ${{ secrets.DROPBOX_ACCESS_TOKEN }}
       - uses: montudor/action-zip@v1
         with:
-            args: zip -qq -r 'mudlet-docs.zip' 'Mudlet Docs'
+            args: zip -qq -r mudletdocs.zip MudletDocs
       - name: Upload reader files to release
         uses: svenstaro/upload-release-action@v2
         with:

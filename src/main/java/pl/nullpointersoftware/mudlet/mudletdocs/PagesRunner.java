@@ -48,7 +48,7 @@ public class PagesRunner implements ApplicationRunner {
         luaWriter.generateFile("lfs.lua", LfsDoc.DESCRIPTORS);
         luaWriter.generateFile("rex.lua", RexDoc.DESCRIPTORS);
 
-        String dir = System.getProperty("user.dir") + "/Mudlet Docs/globals.lua";
+        String dir = System.getProperty("user.dir") + "/MudletDocs/globals.lua";
         Path globalsPath = Path.of(dir);
         Files.deleteIfExists(globalsPath);
         Files.copy(Path.of(getClass().getClassLoader().getResource("globals.lua").toURI()), Path.of(dir));
