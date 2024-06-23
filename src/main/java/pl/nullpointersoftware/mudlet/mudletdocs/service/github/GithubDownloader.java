@@ -3,6 +3,9 @@ package pl.nullpointersoftware.mudlet.mudletdocs.service.github;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import pl.nullpointersoftware.mudlet.mudletdocs.service.api.GithubRestClient;
 
@@ -13,13 +16,19 @@ import java.util.Base64;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class GithubDownloader {
+@ConditionalOnProperty(value = "mudlet-docs.github-download", matchIfMissing = true)
+public class GithubDownloader implements ApplicationRunner {
 
     private final GithubRestClient githubRestClient;
     private final String dir = System.getProperty("user.dir") + "/MudletDocs/geyser/";
 
+    @Override
+    public void run(ApplicationArguments args) {
+        downloadAll();
+    }
+
     @SneakyThrows
-    public void downloadAll() {
+    private void downloadAll() {
         Files.createDirectories(Path.of(dir));
         githubRestClient.getTree().getTree().stream()
                 .filter(treeItem -> treeItem.getPath().startsWith("src/mudlet-lua/lua/geyser/"))

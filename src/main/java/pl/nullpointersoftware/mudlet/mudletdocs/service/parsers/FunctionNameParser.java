@@ -14,6 +14,7 @@ public class FunctionNameParser {
     public LuaDescriptor parse(LuaDescriptor luaDescriptor, String line) {
         String extract = functionSignature.extract(line);
         if (Objects.nonNull(extract)) {
+            extract = extract.replaceAll("-", "_");
             luaDescriptor.setFunctionSignature(extract.trim());
         }
         return luaDescriptor;

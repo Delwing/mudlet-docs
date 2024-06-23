@@ -9,7 +9,6 @@ import pl.nullpointersoftware.mudlet.mudletdocs.model.LuaDescriptor;
 import pl.nullpointersoftware.mudlet.mudletdocs.service.LuaWriter;
 import pl.nullpointersoftware.mudlet.mudletdocs.service.PageAnalyzer;
 import pl.nullpointersoftware.mudlet.mudletdocs.service.api.WikiRestClient;
-import pl.nullpointersoftware.mudlet.mudletdocs.service.github.GithubDownloader;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -29,7 +28,6 @@ public class PagesRunner implements ApplicationRunner {
     private final PageAnalyzer pageAnalyzer;
     private final LuaWriter luaWriter;
     private final WikiRestClient wikiRestClient;
-    private final GithubDownloader githubDownloader;
 
     @Override
     public void run(ApplicationArguments args) throws InterruptedException, URISyntaxException, IOException {
@@ -42,8 +40,6 @@ public class PagesRunner implements ApplicationRunner {
 
         executor.shutdown();
         executor.awaitTermination(1, TimeUnit.MINUTES);
-
-        githubDownloader.downloadAll();
 
         luaWriter.generateFile("lfs.lua", LfsDoc.DESCRIPTORS);
         luaWriter.generateFile("rex.lua", RexDoc.DESCRIPTORS);

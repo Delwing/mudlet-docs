@@ -17,7 +17,7 @@ public class LfsDoc {
             new LuaDescriptor("lfs.mkdir", "lfs.mkdir(dirname)"),
             new LuaDescriptor("lfs.rmdir", "lfs.rmdir(dirname)"),
             new LuaDescriptor("lfs.setmode", "lfs.setmode(file, mode)"),
-            new LuaDescriptor("lfs.symlinkattributes", "lfs.symlinkattributes(filepath, request_name])"),
+            new LuaDescriptor("lfs.symlinkattributes", "lfs.symlinkattributes(filepath, request_name)"),
             new LuaDescriptor("lfs.touch", "lfs.touch(filepath, atime, mtime)"),
             new LuaDescriptor("lfs.unlock", "lfs.unlock(filehandle, start, length)")
     );
