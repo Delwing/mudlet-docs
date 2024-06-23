@@ -16,11 +16,16 @@ public class GithubRestClient {
 
     public static final String TREE_URL = "https://api.github.com/repos/Mudlet/Mudlet/git/trees/development?recursive=1";
     public static final String BLOB_URL = "https://api.github.com/repos/Mudlet/Mudlet/git/blobs/";
+    private static final String TOKEN_ENV_KEY = "GITHUB_TOKEN";
     private final RestTemplate restTemplate;
 
     public GithubTreeResponse getTree() {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
         headers.add("User-Agent", "Dargoth parser");
+        String token = System.getenv(TOKEN_ENV_KEY);
+        if (token != null) {
+            headers.add("Authorization", "Bearer " + token);
+        }
 
         HttpEntity<String> entity = new HttpEntity<>("body", headers);
 
