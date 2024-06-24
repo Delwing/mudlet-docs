@@ -1,17 +1,17 @@
 # Mudlet Docs Extract
-
-Purpose of this project is to extract LUA documentatio into `.lua` files that can be imported
-into project (or added to lib path). That way IDE can autocomplete, popup doc and hint parameters of functions.
+The purpose of this project is to extract LUA documentation into `.lua` files that can be
+imported into a project (or added to the lib path). This allows the IDE to provide
+autocomplete, documentation pop-ups, and parameter hints for functions.
 
 ## VS Code extension
-To easily install and configure documentation in VS Code there is extension available:
+To easily install and configure documentation in VS Code there is an extension available:
 https://marketplace.visualstudio.com/items?itemName=Delwing.mudlet-scripts-sdk
 
 ## Manual VS Code configuration
 
-* Install Lua language server extension (extension id: `sumneko.lua`)
-* Download (or sync through Dropbox) directory with generated `lua` files. https://www.dropbox.com/sh/sfqpjl5zune46ut/AAC_vHm0B2hCGt04NXU7A8_Va?dl=0
-* Add to `settings.json`
+* Install the Lua language server extension (extension id: `sumneko.lua`)
+* Download (or sync through Dropbox) the directory with generated `lua` files. https://www.dropbox.com/sh/sfqpjl5zune46ut/AAC_vHm0B2hCGt04NXU7A8_Va?dl=0
+* Add it to `settings.json`
 ```json
 "Lua.workspace.library": {
         "/path/to/downloaded/lua/files/" : true
