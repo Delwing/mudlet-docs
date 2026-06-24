@@ -1,4 +1,4 @@
-name: Build and push to Dropbox
+name: Build and push to Github release
 on:
   push:
     branches:
